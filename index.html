@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pathshala | Project Documentation</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --secondary: #0ea5e9;
+            --accent: #8b5cf6;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --text: #334155;
+            --border: #e2e8f0;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9;
+            color: var(--text);
+            display: flex;
+        }
+
+        /* --- Sidebar --- */
+        aside {
+            width: 260px;
+            background: var(--dark);
+            color: white;
+            height: 100vh;
+            position: fixed;
+            overflow-y: auto;
+            padding: 2rem 0;
+            z-index: 100;
+        }
+
+        .brand {
+            padding: 0 1.5rem;
+            margin-bottom: 2rem;
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        nav a {
+            display: flex;
+            align-items: center;
+            padding: 0.85rem 1.5rem;
+            color: #94a3b8;
+            text-decoration: none;
+            transition: 0.3s;
+            font-size: 0.9rem;
+            border-left: 3px solid transparent;
+        }
+
+        nav a:hover, nav a.active {
+            background: rgba(255,255,255,0.05);
+            color: white;
+            border-left-color: var(--primary);
+        }
+
+        nav i { width: 24px; margin-right: 10px; }
+
+        /* --- Main Content --- */
+        main {
+            margin-left: 260px;
+            width: calc(100% - 260px);
+            padding: 3rem;
+        }
+
+        header {
+            margin-bottom: 3rem;
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            position: relative;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 6px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+        }
+
+        h1 { font-size: 2.8rem; color: var(--dark); letter-spacing: -1.5px; }
+        .badges { margin-top: 1.5rem; display: flex; gap: 12px; }
+        .badge {
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        section { margin-bottom: 5rem; scroll-margin-top: 2rem; }
+        h2 { font-size: 1.8rem; color: var(--dark); margin-bottom: 2rem; display: flex; align-items: center; }
+        h2 i { color: var(--primary); margin-right: 15px; }
+
+        /* --- Problem/Solution Animated Section --- */
+        .problem-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .problem-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            position: relative;
+            transition: all 0.4s ease;
+            border: 1px solid var(--border);
+        }
+
+        .problem-card.negative { border-left: 8px solid var(--danger); }
+        .problem-card.positive { border-left: 8px solid var(--success); }
+
+        .problem-card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
+
+        .problem-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .negative .problem-icon { background: #fee2e2; color: var(--danger); }
+        .positive .problem-icon { background: #dcfce7; color: var(--success); }
+
+        .problem-list { list-style: none; margin-top: 1rem; }
+        .problem-list li {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            align-items: center;
+            font-size: 0.95rem;
+        }
+
+        .problem-list i { margin-right: 12px; font-size: 0.8rem; }
+
+        /* --- Feature Grid --- */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            border: 1px solid var(--border);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+            transition: transform 0.4s ease;
+        }
+
+        .feature-card:hover .feature-icon { transform: scale(1.15) rotate(5deg); }
+
+        .feature-title { font-size: 1.25rem; font-weight: 700; color: var(--dark); margin-bottom: 0.75rem; }
+        .feature-desc { font-size: 0.9rem; color: #64748b; line-height: 1.6; }
+
+        /* Color variations */
+        .f-indigo { border-bottom: 4px solid var(--primary); }
+        .f-sky { border-bottom: 4px solid var(--secondary); }
+        .f-violet { border-bottom: 4px solid var(--accent); }
+        .f-emerald { border-bottom: 4px solid var(--success); }
+        .f-amber { border-bottom: 4px solid var(--warning); }
+
+        /* --- Broad Roadmap (New Design) --- */
+        .roadmap-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            position: relative;
+        }
+        
+        .roadmap-phase {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid var(--border);
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 2rem;
+            align-items: center;
+            transition: all 0.3s ease;
+            opacity: 0.6; /* Default dimmed */
+            filter: grayscale(0.8);
+        }
+
+        .roadmap-phase.active-phase {
+            opacity: 1;
+            filter: grayscale(0);
+            border: 2px solid var(--primary);
+            box-shadow: 0 10px 30px -5px rgba(79, 70, 229, 0.15);
+            transform: scale(1.02);
+        }
+
+        .roadmap-phase.completed-phase {
+            opacity: 1;
+            filter: grayscale(0);
+            border-left: 5px solid var(--success);
+        }
+
+        .phase-date {
+            text-align: right;
+            border-right: 2px solid #f1f5f9;
+            padding-right: 2rem;
+        }
+
+        .phase-date h3 { font-size: 1.5rem; color: var(--dark); font-weight: 800; line-height: 1; margin-bottom: 5px; }
+        .phase-date span { font-size: 0.85rem; color: var(--primary); font-weight: 700; text-transform: uppercase; }
+
+        .phase-content h4 { font-size: 1.2rem; color: var(--dark); margin-bottom: 0.5rem; }
+        .phase-content p { color: #64748b; font-size: 0.95rem; }
+
+        .status-badge {
+            display: inline-block;
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .active-phase .status-badge { background: #dcfce7; color: #166534; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
+
+        /* --- Revenue Calculator --- */
+        .calc-box {
+            background: linear-gradient(135deg, var(--dark), #1e293b);
+            color: white;
+            padding: 3rem;
+            border-radius: 24px;
+        }
+
+        .calc-input-group input {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 1rem;
+            border-radius: 12px;
+            width: 150px;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .result-val { font-size: 2rem; font-weight: 800; color: var(--success); }
+
+        @media (max-width: 900px) {
+            aside { display: none; }
+            main { margin-left: 0; width: 100%; padding: 1.5rem; }
+            .problem-container { grid-template-columns: 1fr; }
+            .roadmap-phase { grid-template-columns: 1fr; text-align: left; }
+            .phase-date { text-align: left; border-right: none; border-bottom: 1px solid #f1f5f9; padding-bottom: 1rem; padding-right: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <aside>
+        <div class="brand"><i class="fas fa-graduation-cap"></i> Pathshala</div>
+        <nav>
+            <a href="#overview" class="active"><i class="fas fa-home"></i> Overview</a>
+            <a href="#problems"><i class="fas fa-exclamation-triangle"></i> The Challenge</a>
+            <a href="#features"><i class="fas fa-star"></i> Core Features</a>
+            <a href="#roadmap"><i class="fas fa-map"></i> Development Roadmap</a>
+            <a href="#business"><i class="fas fa-chart-line"></i> Business Model</a>
+            <a href="#tech"><i class="fas fa-code"></i> Tech Stack</a>
+        </nav>
+    </aside>
+
+    <main>
+        <header id="overview">
+            <div style="color: var(--primary); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; font-size: 0.8rem;">Project Portfolio 2026</div>
+            <h1>Pathshala <span style="font-weight:300">SaaS</span></h1>
+            <p style="margin-top: 10px; color: #64748b; font-size: 1.1rem;">Revolutionizing Coaching Center Management in Bangladesh.</p>
+            <div class="badges">
+                <span class="badge" style="background:#fff7ed; color:#c2410c;">Status: Planning</span>
+                <span class="badge" style="background:#e0e7ff; color:#4338ca;">Launch Sept 2026</span>
+            </div>
+        </header>
+
+        <section id="problems">
+            <h2><i class="fas fa-balance-scale"></i> Market Fit</h2>
+            <div class="problem-container">
+                <div class="problem-card negative">
+                    <div class="problem-icon"><i class="fas fa-times-circle"></i></div>
+                    <h3>Current Pain Points</h3>
+                    <ul class="problem-list">
+                        <li><i class="fas fa-circle text-danger"></i> Manual attendance leads to proxy entries.</li>
+                        <li><i class="fas fa-circle text-danger"></i> 30% revenue leakage in uncollected fees.</li>
+                        <li><i class="fas fa-circle text-danger"></i> Zero real-time communication with parents.</li>
+                        <li><i class="fas fa-circle text-danger"></i> Paper records are easily lost or damaged.</li>
+                    </ul>
+                </div>
+                <div class="problem-card positive">
+                    <div class="problem-icon"><i class="fas fa-check-circle"></i></div>
+                    <h3>The Pathshala Edge</h3>
+                    <ul class="problem-list">
+                        <li><i class="fas fa-circle text-success"></i> <strong>Digital Check-in</strong> (App / Biometric).</li>
+                        <li><i class="fas fa-circle text-success"></i> Automated SMS reminders for fee dues.</li>
+                        <li><i class="fas fa-circle text-success"></i> Instant PWA alerts for student arrivals.</li>
+                        <li><i class="fas fa-circle text-success"></i> Secure cloud storage with daily backups.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="features">
+            <h2><i class="fas fa-bolt"></i> Core Features (v1.0 Launch)</h2>
+            <div class="feature-grid">
+                <div class="feature-card f-indigo">
+                    <div class="feature-icon"><i class="fas fa-fingerprint" style="color:var(--primary)"></i></div>
+                    <div class="feature-title">Smart Attendance</div>
+                    <p class="feature-desc">Robust Digital Check-in system via App or optional Biometric integration.</p>
+                </div>
+                <div class="feature-card f-emerald">
+                    <div class="feature-icon"><i class="fas fa-money-bill-wave" style="color:var(--success)"></i></div>
+                    <div class="feature-title">Fee Management</div>
+                    <p class="feature-desc">Automated invoicing, digital receipts (PDF), and payment status tracking.</p>
+                </div>
+                <div class="feature-card f-sky">
+                    <div class="feature-icon"><i class="fas fa-cloud-download-alt" style="color:var(--secondary)"></i></div>
+                    <div class="feature-title">PWA Support</div>
+                    <div class="feature-desc">Progressive Web App for desktop & mobile. No app store download needed.</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="expansions">
+            <h2><i class="fas fa-rocket"></i> Upcoming Expansions (v1.1)</h2>
+            <div class="feature-grid">
+                <div class="feature-card f-violet">
+                    <div class="feature-icon"><i class="fas fa-chart-bar" style="color:var(--accent)"></i></div>
+                    <div class="feature-title">Grading System</div>
+                    <p class="feature-desc">Input marks to generate instant rank lists and automated student result sheets.</p>
+                </div>
+                <div class="feature-card f-amber">
+                    <div class="feature-icon"><i class="fas fa-user-friends" style="color:var(--warning)"></i></div>
+                    <div class="feature-title">Parent Portal</div>
+                    <p class="feature-desc">Dedicated dashboard for parents to view attendance, results, and payment history.</p>
+                </div>
+                <div class="feature-card f-indigo">
+                    <div class="feature-icon"><i class="fas fa-bullhorn" style="color:var(--primary)"></i></div>
+                    <div class="feature-title">Digital Notice Board</div>
+                    <p class="feature-desc">Broadcast holidays, exam schedules, and center updates directly to parents' phones.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="roadmap">
+            <h2><i class="fas fa-map"></i> Development Roadmap</h2>
+            <div class="roadmap-container">
+                
+                <div class="roadmap-phase" id="phase1" data-start="2025-12-01" data-end="2026-03-31">
+                    <div class="phase-date">
+                        <span>Phase 1</span>
+                        <h3>Dec 2025 - Mar 2026</h3>
+                    </div>
+                    <div class="phase-content">
+                        <span class="status-badge" id="badge1">Pending</span>
+                        <h4>Requirement Analysis</h4>
+                        <p>Stakeholder interviews, schema finalization, and feature requirements collection from local coaching owners.</p>
+                    </div>
+                </div>
+
+                <div class="roadmap-phase" id="phase2" data-start="2026-04-01" data-end="2026-07-31">
+                    <div class="phase-date">
+                        <span>Phase 2</span>
+                        <h3>Apr 2026 - July 2026</h3>
+                    </div>
+                    <div class="phase-content">
+                        <span class="status-badge" id="badge2">Pending</span>
+                        <h4>Core Development</h4>
+                        <p>Building the MERN backend (Node/Express/Mongo) and Next.js Frontend. Developing PWA interface.</p>
+                    </div>
+                </div>
+
+                <div class="roadmap-phase" id="phase3" data-start="2026-09-01" data-end="2026-09-30">
+                    <div class="phase-date">
+                        <span>Launch</span>
+                        <h3>September 2026</h3>
+                    </div>
+                    <div class="phase-content">
+                        <span class="status-badge" id="badge3">Pending</span>
+                        <h4>Official Launch (v1.0)</h4>
+                        <p>Public rollout of MVP. Direct sales marketing campaign begins in Dhaka.</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="business">
+            <h2><i class="fas fa-hand-holding-usd"></i> Revenue Model</h2>
+            <div class="calc-box">
+                <div style="display:flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 2rem;">
+                    <div class="calc-input-group">
+                        <label style="display:block; margin-bottom: 10px; opacity: 0.8;">Target Customer Count</label>
+                        <input type="number" id="custInput" value="50" oninput="calculateRev()">
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="opacity: 0.7; font-size: 0.9rem;">Projected Monthly Revenue</div>
+                        <div class="result-val" id="revVal">BDT 50,000</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="opacity: 0.7; font-size: 0.9rem;">Net Profit (33% Margin)</div>
+                        <div class="result-val" id="profitVal">BDT 16,500</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tech">
+            <h2><i class="fas fa-layer-group"></i> Architecture</h2>
+            <div class="feature-grid" style="grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));">
+                <div class="feature-card" style="padding: 1.5rem;">
+                    <i class="fas fa-layer-group fa-2x" style="color:#000;"></i>
+                    <div style="font-weight:700; margin-top:10px;">Next.js 15</div>
+                </div>
+                <div class="feature-card" style="padding: 1.5rem;">
+                    <i class="fab fa-react fa-2x" style="color:#61DBFB;"></i>
+                    <div style="font-weight:700; margin-top:10px;">React 19</div>
+                </div>
+                <div class="feature-card" style="padding: 1.5rem;">
+                    <i class="fab fa-node fa-2x" style="color:#68a063;"></i>
+                    <div style="font-weight:700; margin-top:10px;">Node.js</div>
+                </div>
+                <div class="feature-card" style="padding: 1.5rem;">
+                    <i class="fas fa-leaf fa-2x" style="color:#47A248;"></i>
+                    <div style="font-weight:700; margin-top:10px;">MongoDB</div>
+                </div>
+                <div class="feature-card" style="padding: 1.5rem;">
+                    <i class="fas fa-mobile-alt fa-2x" style="color:#ec4899;"></i>
+                    <div style="font-weight:700; margin-top:10px;">PWA</div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        function calculateRev() {
+            const count = document.getElementById('custInput').value;
+            const rev = count * 1000;
+            const profit = rev * 0.33;
+            document.getElementById('revVal').innerText = "BDT " + rev.toLocaleString();
+            document.getElementById('profitVal').innerText = "BDT " + profit.toLocaleString();
+        }
+
+        // --- Interactive Roadmap Logic ---
+        function updateRoadmapStatus() {
+            const now = new Date(); // Gets current time (Dec 15, 2025)
+            const phases = [
+                { id: 'phase1', badge: 'badge1', start: new Date('2025-12-01'), end: new Date('2026-03-31') },
+                { id: 'phase2', badge: 'badge2', start: new Date('2026-04-01'), end: new Date('2026-07-31') },
+                { id: 'phase3', badge: 'badge3', start: new Date('2026-09-01'), end: new Date('2026-09-30') }
+            ];
+
+            phases.forEach(phase => {
+                const el = document.getElementById(phase.id);
+                const badge = document.getElementById(phase.badge);
+
+                if (now > phase.end) {
+                    // Past Phase
+                    el.classList.add('completed-phase');
+                    badge.innerText = "Completed";
+                    badge.style.background = "#dcfce7";
+                    badge.style.color = "#166534";
+                } else if (now >= phase.start && now <= phase.end) {
+                    // Current Phase
+                    el.classList.add('active-phase');
+                    badge.innerText = "In Progress";
+                    // Styles handled by CSS class .active-phase
+                } else {
+                    // Future Phase
+                    badge.innerText = "Upcoming";
+                    badge.style.background = "#f1f5f9";
+                    badge.style.color = "#64748b";
+                }
+            });
+        }
+
+        // Run on load
+        updateRoadmapStatus();
+
+        // Scroll highlight
+        window.addEventListener('scroll', () => {
+            let current = "";
+            document.querySelectorAll('section').forEach(section => {
+                const top = section.offsetTop;
+                if (pageYOffset >= top - 150) current = section.getAttribute('id');
+            });
+            document.querySelectorAll('nav a').forEach(a => {
+                a.classList.remove('active');
+                if (a.getAttribute('href').includes(current)) a.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
